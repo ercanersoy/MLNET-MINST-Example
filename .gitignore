@@ -7,6 +7,8 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/Dotnet.gitignore
 
+# Some changes applied by Ercan Ersoy.
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
@@ -52,3 +54,39 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+.venv
+venv/
+ENV/
+env/
+.vscode/
+*.ipynb
+.ipynb_checkpoints/1
+
+# Model
+*.onnx
+*.pt
