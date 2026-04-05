@@ -1,4 +1,4 @@
-# convert.py - A Python script to convert YOLO model to ONNX format
+# convert.py - A Python script to convert YOLO model to ONNX format for Object Detector
 #
 # Copyright (c) 2026 Ercan Ersoy.
 # This file is licensed under the MIT License.

@@ -1,4 +1,4 @@
-REM build.bat - Build script for ML.NET MNIST Example
+REM build.bat - Build script for Object Detector
 REM
 REM Copyright (c) 2026, Ercan Ersoy.
 REM This file is licensed under the MIT License.

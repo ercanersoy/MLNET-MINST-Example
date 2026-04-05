@@ -1,6 +1,6 @@
-# MLNET MINST Example
+# Object Detector
 
-A A example of ML.NET using MINST dataset from Microsoft
+An example of ML.NET from Microsoft using Ultralytics YOLO26 ImageNet dataset
 
 Copyright (c) 2026 Ercan Ersoy (https://ercanersoy.net)
 This project is licensed under MIT License.
@@ -21,4 +21,6 @@ Run the `.\sources\build.bat` command line
 ## Notes
 
 * .gitignore is taken from gitignore repository of GitHub (https://github.com/github/gitignore) and updated for this project. This repository is license under CC0-1.0 License. Some changes applied by Ercan Ersoy.
+* Microsoft is registered trademark of Microsoft Corporation.
+* Ultralytics and YOLO are registered trademarks of Ultralytics Incorporated.
 * This project is under development.
