@@ -1,14 +1,16 @@
-# convert.py - A Python script to convert YOLO model to ONNX format for Object Detector
+# yolo26-extralarge.py - A Python script to convert YOLO model to ONNX format
+#                        for Object Detector
 #
 # Copyright (c) 2026 Ercan Ersoy.
 # This file is licensed under the MIT License.
-# Written by Ercan Ersoy helped by GitHub Copilot and Claude Haiku 4.5.
+# Written by Ercan Ersoy helped by GitHub Copilot Claude Haiku 4.5 and
+# Claude Opus 4.8.
 
 import os
+import shutil
 import urllib.request
 import urllib.error
 
-from pathlib import Path
 from ultralytics import YOLO
 
 
@@ -66,13 +68,13 @@ def convert_yolo_to_onnx(model_path, output_dir=None):
     Args:
         model_path (str): Path to the input .pt file
         output_dir (str, optional): Directory where the ONNX file will be
-                                    saved. If not specified, defaults to
-                                    ../bin directory.
+                                    saved. If not specified, defaults to the
+                                    ../binaries directory.
     """
 
     # Default output directory
     if output_dir is None:
-        output_dir = os.path.join(os.path.dirname(__file__), "..", "bin")
+        output_dir = os.path.join(os.path.dirname(__file__), "..", "binaries")
 
     # Create output directory if it doesn't exist
     os.makedirs(output_dir, exist_ok=True)
@@ -82,15 +84,24 @@ def convert_yolo_to_onnx(model_path, output_dir=None):
     model = YOLO(model_path)
 
     # Convert to ONNX format
-    print(f"Converting to ONNX format...")
+    print("Converting to ONNX format...")
     try:
-        export_result = model.export(format="onnx", imgsz=640,
-                                     project=output_dir, name="")
-        print(f"✓ Successfully converted: {export_result}")
+        # Ultralytics writes the .onnx file next to the source .pt file and
+        # returns its path, so it is moved into output_dir afterwards.
+        export_result = str(model.export(format="onnx", imgsz=640))
+
+        target_path = os.path.join(output_dir,
+                                   os.path.basename(export_result))
+        if os.path.abspath(export_result) != os.path.abspath(target_path):
+            if os.path.exists(target_path):
+                os.remove(target_path)
+            shutil.move(export_result, target_path)
+
+        print(f"✓ Successfully converted: {target_path}")
 
         # Display file size
-        if os.path.exists(export_result):
-            size_mb = os.path.getsize(export_result) / (1024 * 1024)
+        if os.path.exists(target_path):
+            size_mb = os.path.getsize(target_path) / (1024 * 1024)
             print(f"File size: {size_mb:.2f} MB")
 
     except Exception as e:
@@ -100,13 +111,18 @@ def convert_yolo_to_onnx(model_path, output_dir=None):
 
 if __name__ == "__main__":
     # Model filename and URL
-    model_filename = "yolo26x-cls.pt"
+    model_filename = "yolo26x.pt"
     model_url = ("https://github.com/ultralytics/assets/releases/download/"
-                 "v8.4.0/yolo26x-cls.pt")
+                 "v8.4.0/yolo26x.pt")
+
+    # Resolve directories relative to this script so the build works no matter
+    # what the current working directory is. The .pt file is kept next to this
+    # script in the model directory; the .onnx file is written to binaries.
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    bin_dir = os.path.join(script_dir, "..", "binaries")
 
     # Full path to model file
-    current_dir = os.path.join(os.getcwd(), "binaries")
-    model_path = os.path.join(current_dir, model_filename)
+    model_path = os.path.join(script_dir, model_filename)
 
     # Download model
     print("=" * 50)
@@ -118,8 +134,6 @@ if __name__ == "__main__":
         print("ONNX Format Conversion")
         print("=" * 50)
 
-        # Set output directory to ../binaries
-        bin_dir = os.path.join(os.getcwd(), "binaries")
         convert_yolo_to_onnx(
             model_path=model_path,
             output_dir=bin_dir
