@@ -32,6 +32,9 @@ if exist "%PACKAGES%" (
     echo Not found, skipping: "%PACKAGES%"
 )
 
+REM --- Remove the downloaded model as .pt file -------------------------------
+del model\yolo26x.pt
+
 echo.
 echo Clean complete.
 endlocal
